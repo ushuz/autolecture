@@ -1,5 +1,4 @@
-﻿from apptgen import apptGen
-from const import Const
+﻿from const import Const
 
 class Class:
     u'''Class类 代表一门课程
@@ -25,7 +24,7 @@ class Class:
             self.dataDict['duration'] = 110
             self.dataDict['startTime'] = Const.ClassBeginTime[self.rawList[0][1:]]
         
-        print u"打印['location'] ['duration'] ['startTime'] ['subject']"#FORDEBUG
+        print u"\n打印['location'] ['duration'] ['startTime'] ['subject']"#FORDEBUG
         print self.dataDict['location'],self.dataDict['duration'],self.dataDict['startTime'],self.dataDict['subject']#FORDEBUG
 
     def __getRecurrWeeks(self):
@@ -37,11 +36,13 @@ class Class:
         for i in tmp:
             if '-' in i:
                 t = i.split('-')
-                tmp += [str(j) for j in range(int(t[0]),int(t[1])+1)]   #使用list comprehension将list中每个元素都转变为str
+                tmp += [j for j in range(int(t[0]),int(t[1])+1)]   #使用list comprehension将list中每个元素都转变为str
                 tmp[tmp.index(i)] = None                                #展开完成后清空原位置元素
-        self.recurrWeeks = tmp
+        self.recurrWeeks = [int(i) for i in tmp if i is not None]
+        self.recurrWeeks.sort()
+        self.recurrWeeks = [str(i) for i in self.recurrWeeks]
         
-        print u"打印self.recurrWeeks"#FORDEBUG
+        print u"\n打印self.recurrWeeks"#FORDEBUG
         print self.recurrWeeks,'\n'#FORDEBUG
     
     def save(self):
@@ -58,9 +59,9 @@ class Class:
                 #call apptGen(self.dataDict)
 
 
-def mainRunInit():
-    '''mainRunInit函数
-    初始化'''
+def main():
+    '''main函数
+    主程序'''
     show('welcome')                                                 #显示欢迎信息
 
     show(0)                                                         #获取
@@ -75,9 +76,9 @@ def show(s):
     '''show函数
     打印指定的提示信息'''
     if s == 'welcome':
-        print u'''py-outlook-appt
+        print u'''AutoLecture
 欢迎使用
-程序将帮助你快速生成一系列Outlook appointment代表相应课程以同步至手机用作课程表'''
+程序将帮助你根据课程表快速生成一系列Outlook appointments'''
         print '\n'
     elif s == 0:
         print u"请输入学期第一周周一的日期(str.'YYYYMMDD')"
@@ -90,10 +91,33 @@ eg. '112 高等数学 1108 2-11,14,17'"
     elif s == 'debug':
         print '###FORDEBUG###'
 
+        
+def apptGen(dataDict):
+    u'''apptGen()函数
+    从传入的dataDict参数中获取具体属性以生成指定的AppointmentItem'''
+    import win32com.client                                  #导入必需的模块
+
+    o = win32com.client.Dispatch("Outlook.Application")     #新建一个Outlook.Application实例 o
+    a = o.CreateItem(1)                                     #新建一个AppointmentItem实例 a
+
+    a.Start = dataDict['date']+' '+dataDict['startTime']    #设置课程开始时间
+    a.Duration = dataDict['duration']                       #设置课程时长
+    a.Subject = dataDict['subject']                         #设置课程名称
+    a.Location = dataDict['location']                       #设置授课教室
+
+    p = a.GetRecurrencePattern()                            #获取AppointmentItem.GetRecurrencePattern()对象以修改a的重复类型
+    p.RecurrenceType = 0                                    #设置重复类型为 0 == olRecursDaily
+
+    p.PatternStartDate = dataDict['date']                   #设置重复开始日期
+    p.PatternEndDate = dataDict['date']                     #结束日期为同一天
+
+    a.Save()                                                #储存 a
+
+
 if __name__ == '__main__':
     C = Const()                                                               #创建Const实例C以提供相应常量
     try:
-        mainRunInit()                                                         #初始化
+        main()                                                         #初始化
         show('debug')
         print C.DateDict                                                      #打印weekDayDict
         show('debug')#FORDEBUG

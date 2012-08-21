@@ -11,7 +11,7 @@ class Const:
         termFirstDay = datetime.date(int(termFirstDayStr[:4]),int(termFirstDayStr[4:6]),int(termFirstDayStr[6:]))
     
         weekDayList = []
-        weekNo = 11
+        weekNo = 11             #表示第一周周一
         weekDayDict = {}
     
         #生成工作日(weekday)日期列表(list)
