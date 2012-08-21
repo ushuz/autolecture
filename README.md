@@ -1,6 +1,6 @@
 Autolecture, for BJFU
 =====================
-根据BJFU课表信息，利用win32com生成outlook appointment，以同步至S60v3手机，作课程提醒用。
+根据BJFU课表信息，通过win32com生成outlook appointment，以同步至S60v3手机，作课程提醒用。
 
 TODO
 ----
