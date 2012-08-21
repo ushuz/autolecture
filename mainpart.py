@@ -3,7 +3,6 @@ from const import Const
 
 class Class:
     u'''Class类 代表一门课程
-
     包含了一门课程location、subject、duration、startTime等属性以及save等方法'''
     def __init__(self,inString):
         u''''''
@@ -15,7 +14,6 @@ class Class:
     
     def __parse(self):
         u'''Class.__parse私有方法
-
     从已拆分好的rawList中解析出location、subject、duration、startTime等属性
     并储存到dataDict'''
         self.dataDict['subject'] = self.rawList[1]
@@ -32,7 +30,6 @@ class Class:
 
     def __getRecurrWeeks(self):
         u'''Class.__getRecurrWeeks私有方法
-
     获取上课周次'''
         tmp = self.rawList[3].split(',')
         
@@ -49,7 +46,6 @@ class Class:
     
     def save(self):
         u'''save方法
-
     生成课程的appointment并储存到Outlook'''
         for i in self.recurrWeeks:
             if i != None:
@@ -64,7 +60,6 @@ class Class:
 
 def mainRunInit():
     '''mainRunInit函数
-
     初始化'''
     show('welcome')                                                 #显示欢迎信息
 
@@ -78,7 +73,6 @@ def mainRunInit():
 
 def show(s):
     '''show函数
-
     打印指定的提示信息'''
     if s == 'welcome':
         print u'''py-outlook-appt

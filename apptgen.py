@@ -1,6 +1,5 @@
 ﻿def apptGen(dataDict):
     u'''apptGen()函数
-
     从传入的dataDict参数中获取具体属性以生成指定的AppointmentItem'''
     import win32com.client                                  #导入必需的模块
 

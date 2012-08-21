@@ -1,14 +1,12 @@
 ﻿import datetime
 class Const:
     u'''Const类 代表公用常量
-
     为程序提供所需常量'''
     ClassRoomBuilding = (u'',u'一教',u'二教',u'三教',u'四教',u'体育场')                                        #授课教学楼
     ClassBeginTime = {'12':'8:00','34':'10:10','56':'13:30','78':'15:40','910':'19:00'}                        #课程开始时间
 
     def genDateDict(self,termFirstDayStr,termTotalWeeks):
         u'''Const.genDateDict方法
-
     由传入的termFirstDayStr和termTotalWeeksInt参数\n生成以(AB(A:digit,周目;B:digit,日目))为键的工作日词典dateDict'''''
         termFirstDay = datetime.date(int(termFirstDayStr[:4]),int(termFirstDayStr[4:6]),int(termFirstDayStr[6:]))
     
