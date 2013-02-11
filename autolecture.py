@@ -9,6 +9,7 @@ import win32com.client
 BUILDINGS = {"1": u'一教', "2": u'二教', "3": u'三教', "4": u'四教'}                                  #授课教学楼
 START_TIMES = {'1':'8:00', '2':'10:10', '3':'13:30', '4':'15:40', '5':'19:00'}                        #课程开始时间
 DATES = {}
+CURRENT_USER = ""
 
 
 class Class:
@@ -32,7 +33,7 @@ class Class:
         else:
             self.dataDict["location"] = self.rawList[3]
         self.dataDict['weekDayNo'] = self.rawList[0][0]
-        if u'二教' in self.dataDict['location'] and self.rawList[0][1:] == '34':
+        if u'二教' in self.dataDict['location'] and self.rawList[0][1:] == '2':
             self.dataDict['duration'] = 100
             self.dataDict['startTime'] = '10:05'
         else:
@@ -88,6 +89,7 @@ def apptGen(dataDict):
     a.Subject = dataDict['subject']
     a.Location = dataDict['location']
     a.ReminderSet = False
+    a.Organizer = CURRENT_USER
 
     #创建约会系列
     #每周一次，从该课程第一周到最后一周
@@ -118,25 +120,7 @@ def apptGen(dataDict):
         todelete = sp.GetOccurrence(time.strptime(tofind, "%Y-%m-%d %H:%M"))
         todelete.Delete()
         log(u"删除多余课程: "+tofind+u" "+dataDict['subject'])
-        
-# def show(s):
-    # '''show函数
-    # 打印指定的提示信息'''
-    # if s == 'welcome':
-        # print u'''AutoLecture
-# 欢迎使用
-# 程序将帮助你根据课程表快速生成一系列Outlook appointments'''
-        # print '\n'
-    # elif s == 0:
-        # print u"请输入学期第一周周一的日期(str.'YYYYMMDD')"
-    # elif s == 1:
-        # print u'请输入学期总周数(int.dd)'
-    # elif s == 2:
-        # print u'''请输入课程信息(str.'WSS SUBJECT RECURRWEEKS LOCATION')
-# eg. '11 高等数学 1108 2-11,14,17'"
-    # 周一1-2节 高等数学 2-11,14,17周 一教108上课'''
-    # elif s == 'debug':
-        # print '###FORDEBUG###'
+
 
 def genDateDict(termFirstDayStr,termTotalWeeks):
     u'''genDateDict函数
@@ -160,17 +144,19 @@ def genDateDict(termFirstDayStr,termTotalWeeks):
         else:
             weekNo += 1
 
+
 def main(termFirstDayStr, termTotalWeeks, lectures):
     #生成DATES常量
-    
     genDateDict(termFirstDayStr, termTotalWeeks)
     
     for i in lectures:
         Class(i.decode("utf-8")).save()
 
+
 if __name__ == '__main__':
     
     debug = True
+    CURRENT_USER = "ushuz"
     
     if debug:
         logging.basicConfig(level=logging.DEBUG,
@@ -182,5 +168,10 @@ if __name__ == '__main__':
                     )
     log = logging.debug
     
-    
-    main("20120903", 20, [])
+    # termFirstDayStr          - 学期第一周周一的日期     (str.'YYYYMMDD')
+    # termTotalWeeks           - 学期总周数               (int.dd)
+    # lectrues                 - 课程信息                 ([str].['WS SUBJECT RECURRWEEKS LOCATION'])
+    #                                                     ["11 高等数学 2-11,14,17 1108", ""]
+    #                                                     周一1-2节 高等数学 2-11,14,17周 一教108上课
+    main(termFirstDayStr="20130225", termTotalWeeks=19, 
+         lectures=["12 测试 2-11 2108"])

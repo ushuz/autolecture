@@ -4,8 +4,6 @@ Autolecture, for BJFU
 
 TODO
 ----
-目前项目以基本完成，debug语句仍保留在源文件中，生成outlook appointment的call被注释。
-*   <s>修改appointment的recurrence类型为每周发生，使一门课程成为一个系列约会</s>
-*   <s>修改公用常量的提供方式</s>
+目前项目以基本完成。
 *   完善docstring及注释
 *   完善代码风格
