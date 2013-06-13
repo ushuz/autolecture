@@ -4,6 +4,6 @@ Autolecture, for BJFU
 
 TODO
 ----
-目前项目以基本完成。
+目前已基本完成。
 *   完善docstring及注释
 *   完善代码风格
